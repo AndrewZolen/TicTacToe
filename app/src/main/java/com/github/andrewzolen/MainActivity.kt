@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cell21: Button
     private lateinit var cell22: Button
 
+    private lateinit var buttonList : List<Button>
+
     private lateinit var clearButton: Button
     private lateinit var turnNext: TextView
     private var moveCount = 0
@@ -47,37 +49,24 @@ class MainActivity : AppCompatActivity() {
         cell21 = findViewById(R.id.cell21)
         cell22 = findViewById(R.id.cell22)
 
+
+
         clearButton = findViewById(R.id.clearButton)
         turnNext = findViewById(R.id.turnText)
 
-        cell00.setOnClickListener {
-            makeMove(cell00)
+        buttonList = listOf(
+            cell00, cell01, cell02,
+            cell10, cell11, cell12,
+            cell20, cell21, cell22
+        )
+
+        buttonList.forEach { button ->
+            button.setOnClickListener {
+                makeMove(button)
+            }
         }
 
-        cell01.setOnClickListener {
-            makeMove(cell01)
-        }
-        cell02.setOnClickListener {
-            makeMove(cell02)
-        }
-        cell10.setOnClickListener {
-            makeMove(cell10)
-        }
-        cell11.setOnClickListener {
-            makeMove(cell11)
-        }
-        cell12.setOnClickListener {
-            makeMove(cell12)
-        }
-        cell20.setOnClickListener {
-            makeMove(cell20)
-        }
-        cell21.setOnClickListener {
-            makeMove(cell21)
-        }
-        cell22.setOnClickListener {
-            makeMove(cell22)
-        }
+
         clearButton.setOnClickListener {
             clearTable()
         }
@@ -89,7 +78,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun makeMove(button: Button) {
         if (isGameOver)
             return
@@ -118,15 +106,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun clearTable() {
-        cell00.text = ""
-        cell01.text = ""
-        cell02.text = ""
-        cell10.text = ""
-        cell11.text = ""
-        cell12.text = ""
-        cell20.text = ""
-        cell21.text = ""
-        cell22.text = ""
+        buttonList.forEach { it.text = "" }
         isGameOver = false
         isXTurn = true
         moveCount = 0
@@ -148,7 +128,7 @@ class MainActivity : AppCompatActivity() {
         for (line in winningLines) {
             val symbol = line[0].text.toString()
 
-            if (symbol.isNotEmpty() && line.all{button -> button.text.toString() == symbol})
+            if (symbol.isNotEmpty() && line.all { button -> button.text.toString() == symbol })
                 return symbol
         }
 
